@@ -21,9 +21,19 @@ const getWalletBalance = async () => {
     }
 }
 
-const main = async() => {
-    await getWalletBalance()
+const airDropSol = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+    const fromAirdropSignature = await connection.requestAirdrop(publicKey, 2 * LAMPORTS_PER_SOL)
+    await connection.confirmTransaction(fromAirdropSignature)
 
 }
+
+// Test to check if the wallet balance has changed
+const main = async() => {
+    await getWalletBalance()
+    await  airDropSol()
+    await getWalletBalance()
+}
+
 
 main()
